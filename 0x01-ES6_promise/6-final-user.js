@@ -10,5 +10,5 @@ export default async function handleProfileSignup(
     signUpUser(firstName, lastName),
     uploadPhoto(fileName),
   ]);
-  console.log(data);
+  return data;
 }
