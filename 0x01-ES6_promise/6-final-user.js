@@ -4,11 +4,15 @@ import uploadPhoto from './5-photo-reject';
 export default async function handleProfileSignup(
   firstName,
   lastName,
-  fileName,
+  fileName
 ) {
   const data = await Promise.allSettled([
     signUpUser(firstName, lastName),
     uploadPhoto(fileName),
   ]);
-  return data;
+  // prettier-ignore
+  return data.map((result) => ({
+    status: result.status,
+    value: result.status === 'fulfilled' ? result.value : result.reason
+  }));
 }
