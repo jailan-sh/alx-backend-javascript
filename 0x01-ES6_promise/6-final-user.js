@@ -9,10 +9,14 @@ export default async function handleProfileSignup(
   const data = await Promise.allSettled([
     signUpUser(firstName, lastName),
     uploadPhoto(fileName),
-  ]);
-  // prettier-ignore
-  return data.map((result) => ({
-    status: result.status,
-    value: result.status === 'fulfilled' ? result.value : result.reason,
+  ]).then((response) => response.map((response) => {
+    if (response.status !== 'fulfilled') {
+      return {
+        status: 'rejected',
+        value: response.reason.toString(),
+      };
+    }
+    return response;
   }));
+  return Promise.resolve(data);
 }
